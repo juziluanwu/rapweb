@@ -6,7 +6,9 @@ import Axios from "axios";
 
 Vue.use(ElementUI);
 Vue.config.productionTip = false
-Vue.use(Axios);
+// Vue.use(Axios);
+
+Vue.prototype.$Axios = Axios;
 
 new Vue({
   render: h => h(App),

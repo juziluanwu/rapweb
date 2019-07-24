@@ -6,10 +6,10 @@
       </el-header>
       <el-main>
         <el-row>
-          <el-col :span="12"><div class="grid-content bg-purple"><el-input v-model="input" placeholder="请输入内容"></el-input></div></el-col>
-          <el-col :span="12"><div class="grid-content bg-purple-light"> <el-button round>搜索</el-button></div></el-col>
+          <el-col :span="12"><div class="grid-content bg-purple"><el-input v-model="projectinfo" placeholder="请输入内容"></el-input></div></el-col>
+          <el-col :span="12"><div class="grid-content bg-purple-light"> <el-button @click="searchProject()">搜索</el-button></div></el-col>
         </el-row>
-        <template>
+
           <el-table
                   :data="tableData"
                   style="width: 100%">
@@ -25,24 +25,39 @@
             </el-table-column>
 
           </el-table>
-        </template>
+
       </el-main>
     </el-container>
   </div>
 </template>
 
 <script>
+
 export default {
 
   name: 'project',
   props: {
     msg: String
+  },
+  data () {
+    return {
+      info: null,
+      projectinfo:''
+    }
+  },
+  methods: {
+    searchProject(){
+      this.$Axios.get('http://localhost:8080/rap/project/list')
+      .then(response => {
+        this.info = response.data;
+        console.log(this.info)
+
+      })
+    }
   }
 }
 
- new Vue({
-  el: '#v-project',
-})
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
