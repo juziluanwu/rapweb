@@ -26,7 +26,7 @@
                             label="项目名称"
                             width="180">
                         <template slot-scope="scope">
-                            <router-link to="/MenuDetail">{{scope.row.name}}</router-link>
+                            <router-link :to="'/MenuDetail/'+scope.row.id">{{scope.row.name}}</router-link>
                         </template>
                     </el-table-column>
                     <el-table-column
@@ -95,11 +95,7 @@
             return {
                 projectinfo: [],
                 searchinfo: '',
-                projectdetail: {
-                    id: '',
-                    name: '',
-                    remark: ''
-                },
+                projectdetail: {},
                 dialogFormVisible: false,
                 detailVisible: false,
                 formLabelWidth: 20
@@ -124,11 +120,8 @@
                 this.projectdetail = row;
             },
             showAddDig() {
+                this.projectdetail={};
                 this.dialogFormVisible = true;
-                //this.projectdetail=
-                this.projectdetail.id = '';
-                this.projectdetail.name = '';
-                this.projectdetail.remark = '';
             },
             addOrEdit() {
                 if (this.projectdetail.id != null && this.projectdetail.id != '') {

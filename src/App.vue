@@ -1,18 +1,14 @@
 <template>
   <div id="app">
-<!--    <img alt="Vue logo" src="./assets/logo.png">-->
-    <Project msg="Welcome to Your Vue.js App"/>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Project from './components/Project.vue'
 
 export default {
-  name: 'app',
-  components: {
-    Project
-  }
+  name: 'app'
+
 }
 </script>
 
