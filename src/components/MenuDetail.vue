@@ -13,7 +13,6 @@
         <el-container>
             <el-aside width="400px" height="auto">
                 <div class="block">
-                    <p>使用 scoped slot</p>
                     <el-tree
                             :data="treedata"
                             :props="treedataprop"
