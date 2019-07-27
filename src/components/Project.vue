@@ -69,10 +69,10 @@
         <el-dialog title="详情" :visible.sync="detailVisible">
             <el-form :model="projectdetail">
                 <el-form-item label="项目名称:">
-                    <el-span>{{projectdetail.name}}</el-span>
+                    <span>{{projectdetail.name}}</span>
                 </el-form-item>
                 <el-form-item label="项目简介:">
-                    <el-span>{{projectdetail.remark}}</el-span>
+                    <span>{{projectdetail.remark}}</span>
                 </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
