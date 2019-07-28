@@ -57,7 +57,7 @@
                 <detail-info v-if="operate=='info' && interfacetype == '3'"
                              :interfaceDetail="interfaceinfo"></detail-info>
                 <edit-detail v-if="operate=='edit' && interfacetype == '3'"
-                             :interfaceinfo="interfaceinfo"></edit-detail>
+                             :interfaceDetail="interfaceinfo"></edit-detail>
             </el-main>
         </el-container>
     </el-container>
@@ -161,17 +161,19 @@
 
                 }
 
-            }
-            // append(data) {
-            //
-            //
-            //     const newChild = { id: id++, label: 'testtest', children: [] };
-            //     if (!data.children) {
-            //         this.$set(data, 'children', []);
-            //     }
-            //     data.children.push(newChild);
-            // },
+            },
+            append(data) {
 
+
+                // const newChild = { id: id++, label: 'testtest', children: [] };
+                // if (!data.children) {
+                //     this.$set(data, 'children', []);
+                // }
+                // data.children.push(newChild);
+            },
+            addNode(){
+
+            }
 
         }
     }
