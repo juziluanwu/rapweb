@@ -18,14 +18,14 @@
                             :props="treedataprop"
                             node-key="id"
                             default-expand-all
-                            @node-click="selectNode"
+
                             highlight-current
                             :filter-node-method="filterNode"
                             :expand-on-click-node="false"
                             ref="tree"
                     >
       <span class="custom-tree-node" slot-scope="{ node, data }">
-        <span>{{ node.label }}</span>
+        <span @click="() => selectNode(data)">{{ node.label }}</span>
         <span>
           <el-button
                   v-if="data.type != 3"
@@ -163,8 +163,8 @@
 
             },
             append(data) {
-
-
+                this.interfacetype = data.type
+                this.operate = 'edit'
                 // const newChild = { id: id++, label: 'testtest', children: [] };
                 // if (!data.children) {
                 //     this.$set(data, 'children', []);
@@ -173,7 +173,17 @@
             },
             addNode(){
 
-            }
+            },
+            edit(data) {
+                this.interfacetype = data.type
+                this.operate = 'edit'
+
+                // const newChild = { id: id++, label: 'testtest', children: [] };
+                // if (!data.children) {
+                //     this.$set(data, 'children', []);
+                // }
+                // data.children.push(newChild);
+            },
 
         }
     }

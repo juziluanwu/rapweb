@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-form :model="interfaceDetail">
+        <el-form :model="interfaceDetail" label-width="80px">
             <el-input v-model="interfaceDetail.id" type="hidden"></el-input>
             <el-form-item label="接口名称:">
                 <el-input v-model="interfaceDetail.name" autocomplete="off"></el-input>
@@ -12,6 +12,18 @@
                     <el-option label="PUT" :value="3"></el-option>
                     <el-option label="DELETE" :value="4"></el-option>
                 </el-select>
+            </el-form-item>
+            <el-form-item label="请求URL:">
+                <el-input v-model="interfaceDetail.url" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="说明:">
+                <el-input v-model="interfaceDetail.remark" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="请求参数:">
+                <el-input v-model="interfaceDetail.requestparam" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="响应参数:">
+                <el-input v-model="interfaceDetail.responseparam" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
