@@ -55,9 +55,10 @@
             </el-aside>
             <el-main>
                 <detail-info v-if="operate=='info' && interfacetype == '3'"
-                             :interfaceDetail="interfaceinfo"></detail-info>
+                             :interfaceDetail="interfaceinfo"  ></detail-info>
                 <edit-detail v-if="operate=='edit' && interfacetype == '3'"
-                             :interfaceDetail="interfaceinfo"></edit-detail>
+                             :interfaceDetail="interfaceinfo" @editendp="showinfo"></edit-detail>
+                <edit-detail v-if="operate=='save' && interfacetype == '2'" :interfaceDetail="interfaceinfo"  @saveendp="addNode"></edit-detail>
             </el-main>
         </el-container>
     </el-container>
@@ -139,24 +140,24 @@
                 if (!value) return true;
                 return data.name.indexOf(value) !== -1;
             },
-            // setDetailId(){
-            //     return this.interfaceinfo.id;
-            // },
+            getifdetial(id){
+                 this.$Axios.get(this.BASEURL + '/detail/info/' + id)
+                    .then(res => {
+                        if (res.data.success) {
+
+                            this.interfaceinfo = res.data.data
+                            if (this.interfaceinfo == null) {
+                                this.interfaceinfo = {}
+                            }
+                        }
+                    })
+            },
             selectNode(node) {
                 this.interfacetype = node.type
                 this.operate = 'info'
                 if (this.interfacetype == 3) {
                     // this.$refs.childinfo.getdetail(node.id)
-                    this.$Axios.get(this.BASEURL + '/detail/info/' + node.id)
-                        .then(res => {
-                            if (res.data.success) {
-
-                                this.interfaceinfo = res.data.data
-                                if (this.interfaceinfo == null) {
-                                    this.interfaceinfo = {}
-                                }
-                            }
-                        })
+                    this.getifdetial(node.id)
 
 
                 }
@@ -164,26 +165,25 @@
             },
             append(data) {
                 this.interfacetype = data.type
-                this.operate = 'edit'
-                // const newChild = { id: id++, label: 'testtest', children: [] };
-                // if (!data.children) {
-                //     this.$set(data, 'children', []);
-                // }
-                // data.children.push(newChild);
+                this.operate = 'save'
+                this.interfaceinfo.menuid=data.id
             },
             addNode(){
 
+                const newChild = { id: id++, label: 'testtest', children: [] };
+                if (!data.children) {
+                    this.$set(data, 'children', []);
+                }
+                data.children.push(newChild);
             },
             edit(data) {
                 this.interfacetype = data.type
                 this.operate = 'edit'
-
-                // const newChild = { id: id++, label: 'testtest', children: [] };
-                // if (!data.children) {
-                //     this.$set(data, 'children', []);
-                // }
-                // data.children.push(newChild);
+                this.getifdetial(data.id)
             },
+            showinfo(){
+                this.operate = 'info'
+            }
 
         }
     }

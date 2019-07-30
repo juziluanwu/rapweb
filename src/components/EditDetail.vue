@@ -6,7 +6,7 @@
                 <el-input v-model="interfaceDetail.name" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="请求类型:">
-                <el-select v-model="interfaceDetail.type" placeholder="请选择">
+                <el-select v-model="interfaceDetail.iftype" placeholder="请选择">
                     <el-option label="GET" :value="1"></el-option>
                     <el-option label="POST" :value="2"></el-option>
                     <el-option label="PUT" :value="3"></el-option>
@@ -42,6 +42,31 @@
         },
         props: {
             interfaceDetail: {}
+        },
+        methods:{
+            addOrEdit() {
+                if(this.interfaceDetail.id){
+                    //编辑
+                    this.$Axios.post(this.BASEURL + '/detail/update', this.interfaceDetail)
+                        .then(res => {
+                                if (res.data.success) {
+                                   //调取父级方法
+                                    this.$emit('editendp')
+                                }
+                            }
+                        )
+                }else{
+                    //新增
+                    this.$Axios.post(this.BASEURL + '/detail/save', this.interfaceDetail)
+                        .then(res => {
+                                if (res.data.success) {
+                                    //调取父级方法
+                                    this.$emit('saveendp')
+                                }
+                            }
+                        )
+                }
+            }
         }
     }
 </script>

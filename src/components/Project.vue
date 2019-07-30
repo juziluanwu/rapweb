@@ -124,7 +124,7 @@
                 this.dialogFormVisible = true;
             },
             addOrEdit() {
-                if (this.projectdetail.id != null && this.projectdetail.id != '') {
+                if (this.projectdetail.id) {
                     this.$Axios.post(this.BASEURL + '/project/update', this.projectdetail)
                         .then(res => {
                                 if (res.data.success) {
