@@ -166,7 +166,16 @@
             append(data) {
                 this.interfacetype = data.type
                 this.operate = 'save'
-                this.interfaceinfo.menuid=data.id
+
+                this.interfaceinfo={}
+                this.interfaceinfo.pid=data.pid
+                this.interfaceinfo.fid=data.id
+                if(data.type == 1){
+                    this.interfaceinfo.type=2
+                }else if(data.type == 2){
+                    this.interfaceinfo.type=3
+                }
+
             },
             addNode(){
 
