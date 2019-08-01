@@ -5,7 +5,7 @@
             <el-form-item label="接口名称:">
                 <el-input v-model="interfaceDetail.name" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="请求类型:">
+            <el-form-item label="请求类型:" v-if="interfaceDetail.type==3">
                 <el-select v-model="interfaceDetail.iftype" placeholder="请选择">
                     <el-option label="GET" :value="1"></el-option>
                     <el-option label="POST" :value="2"></el-option>
@@ -13,16 +13,16 @@
                     <el-option label="DELETE" :value="4"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item label="请求URL:">
+            <el-form-item label="请求URL:" v-if="interfaceDetail.type==3">
                 <el-input v-model="interfaceDetail.url" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="说明:">
                 <el-input v-model="interfaceDetail.remark" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="请求参数:">
+            <el-form-item label="请求参数:" v-if="interfaceDetail.type==3">
                 <el-input v-model="interfaceDetail.requestparam" autocomplete="off"></el-input>
             </el-form-item>
-            <el-form-item label="响应参数:">
+            <el-form-item label="响应参数:" v-if="interfaceDetail.type==3">
                 <el-input v-model="interfaceDetail.responseparam" autocomplete="off"></el-input>
             </el-form-item>
         </el-form>
@@ -47,21 +47,21 @@
             addOrEdit() {
                 if(this.interfaceDetail.id){
                     //编辑
-                    this.$Axios.post(this.BASEURL + '/detail/update', this.interfaceDetail)
+                    this.$Axios.post(this.BASEURL + '/project/update', this.interfaceDetail)
                         .then(res => {
                                 if (res.data.success) {
                                    //调取父级方法
-                                    this.$emit('editendp')
+                                    this.$emit('editendp',this.interfaceDetail)
                                 }
                             }
                         )
                 }else{
                     //新增
-                    this.$Axios.post(this.BASEURL + '/detail/save', this.interfaceDetail)
+                    this.$Axios.post(this.BASEURL + '/project/save', this.interfaceDetail)
                         .then(res => {
                                 if (res.data.success) {
                                     //调取父级方法
-                                    this.$emit('saveendp')
+                                    this.$emit('saveendp',res.data.data)
                                 }
                             }
                         )

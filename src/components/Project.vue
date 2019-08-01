@@ -106,7 +106,7 @@
         },
         methods: {
             searchProject() {
-                this.$Axios.get(this.BASEURL + '/project/list?info='+this.searchinfo)
+                this.$Axios.get(this.BASEURL + '/project/list?name='+this.searchinfo+'&type=1')
                     .then(res => {
                         this.projectinfo = res.data.data;
                     })
@@ -124,6 +124,7 @@
                 this.dialogFormVisible = true;
             },
             addOrEdit() {
+                this.projectdetail.type = 1;
                 if (this.projectdetail.id) {
                     this.$Axios.post(this.BASEURL + '/project/update', this.projectdetail)
                         .then(res => {

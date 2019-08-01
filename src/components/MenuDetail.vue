@@ -54,11 +54,11 @@
 
             </el-aside>
             <el-main>
-                <detail-info v-if="operate=='info' && interfacetype == '3'"
-                             :interfaceDetail="interfaceinfo"  ></detail-info>
-                <edit-detail v-if="operate=='edit' && interfacetype == '3'"
-                             :interfaceDetail="interfaceinfo" @editendp="showinfo"></edit-detail>
-                <edit-detail v-if="operate=='save' && interfacetype == '2'" :interfaceDetail="interfaceinfo"  @saveendp="addNode"></edit-detail>
+                <detail-info v-if="operate=='info'"
+                             :interfaceDetail="shownode"></detail-info>
+                <edit-detail v-if="operate=='edit'"
+                             :interfaceDetail="selectnode" @editendp="showinfo"></edit-detail>
+                <edit-detail v-if="operate=='save'" :interfaceDetail="childnode" @saveendp="addNode"></edit-detail>
             </el-main>
         </el-container>
     </el-container>
@@ -81,9 +81,11 @@
         },
         data() {
             return {
+                shownode: {},
+                childnode: {},
                 operate: '',//显示编辑还是详情
                 filterText: '',
-                interfaceinfo: {},//接口详情
+                selectnode: {},//接口详情
                 interfacetype: '',//菜单的类型
                 projectid: '',//项目id
                 treedata: [],
@@ -99,12 +101,9 @@
             this.menutree();
         },
         methods: {
-            searchInterface() {
-
-            },
             menutree() {
 
-                this.$Axios.get(this.BASEURL + '/menu/list/' + this.projectid)
+                this.$Axios.get(this.BASEURL + '/project/tree?pid=' + this.projectid)
                     .then(res => {
                         if (res.data.success) {
                             this.inittree(res.data.data)
@@ -140,58 +139,47 @@
                 if (!value) return true;
                 return data.name.indexOf(value) !== -1;
             },
-            getifdetial(id){
-                 this.$Axios.get(this.BASEURL + '/detail/info/' + id)
-                    .then(res => {
-                        if (res.data.success) {
 
-                            this.interfaceinfo = res.data.data
-                            if (this.interfaceinfo == null) {
-                                this.interfaceinfo = {}
-                            }
-                        }
-                    })
-            },
             selectNode(node) {
                 this.interfacetype = node.type
                 this.operate = 'info'
-                if (this.interfacetype == 3) {
-                    // this.$refs.childinfo.getdetail(node.id)
-                    this.getifdetial(node.id)
-
-
-                }
-
+                this.selectnode = node
+                this.shownode = node
             },
             append(data) {
+                this.selectnode = data
                 this.interfacetype = data.type
                 this.operate = 'save'
 
-                this.interfaceinfo={}
-                this.interfaceinfo.pid=data.pid
-                this.interfaceinfo.fid=data.id
-                if(data.type == 1){
-                    this.interfaceinfo.type=2
-                }else if(data.type == 2){
-                    this.interfaceinfo.type=3
+                this.childnode = {}
+                this.childnode.pid = data.pid
+                this.childnode.fid = data.id
+                if (data.type == 1) {
+                    this.childnode.type = 2
+                } else if (data.type == 2) {
+                    this.childnode.type = 3
                 }
 
             },
-            addNode(){
-
-                const newChild = { id: id++, label: 'testtest', children: [] };
-                if (!data.children) {
-                    this.$set(data, 'children', []);
+            addNode(child) {
+                child.children = []
+                if (!this.selectnode.children) {
+                    this.$set(this.selectnode, 'children', []);
                 }
-                data.children.push(newChild);
+                this.selectnode.children.push(child);
+
+                this.operate = 'info'
+                this.shownode = child
+
             },
             edit(data) {
                 this.interfacetype = data.type
                 this.operate = 'edit'
-                this.getifdetial(data.id)
+                this.selectnode = data
             },
-            showinfo(){
+            showinfo(node) {
                 this.operate = 'info'
+                this.shownode = node
             }
 
         }
