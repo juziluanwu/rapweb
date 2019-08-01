@@ -1,29 +1,30 @@
 <template>
-    <el-container width="900px">
-        <el-header style="width: 600px;margin: auto">
-            <el-row>
-                <el-col :span="10">
-                    <el-input
-                            placeholder="输入关键字进行过滤"
-                            v-model="filterText">
-                    </el-input>
-                </el-col>
-            </el-row>
-        </el-header>
-        <el-container>
-            <el-aside width="400px" height="auto">
-                <div class="block">
-                    <el-tree
-                            :data="treedata"
-                            :props="treedataprop"
-                            node-key="id"
-                            default-expand-all
+    <div id="v-detail" style="width: 1000px;margin: auto">
+        <el-container width="900px">
+            <el-header>
+                <el-row>
+                    <el-col :span="10">
+                        <el-input
+                                placeholder="输入关键字进行过滤"
+                                v-model="filterText">
+                        </el-input>
+                    </el-col>
+                </el-row>
+            </el-header>
+            <el-container>
+                <el-aside width="400px" height="auto">
+                    <div class="block">
+                        <el-tree
+                                :data="treedata"
+                                :props="treedataprop"
+                                node-key="id"
+                                default-expand-all
 
-                            highlight-current
-                            :filter-node-method="filterNode"
-                            :expand-on-click-node="false"
-                            ref="tree"
-                    >
+                                highlight-current
+                                :filter-node-method="filterNode"
+                                :expand-on-click-node="false"
+                                ref="tree"
+                        >
       <span class="custom-tree-node" slot-scope="{ node, data }">
         <span @click="() => selectNode(data)">{{ node.label }}</span>
         <span>
@@ -49,19 +50,20 @@
           </el-button>
         </span>
       </span>
-                    </el-tree>
-                </div>
+                        </el-tree>
+                    </div>
 
-            </el-aside>
-            <el-main>
-                <detail-info v-if="operate=='info'"
-                             :interfaceDetail="shownode"></detail-info>
-                <edit-detail v-if="operate=='edit'"
-                             :interfaceDetail="selectnode" @editendp="showinfo"></edit-detail>
-                <edit-detail v-if="operate=='save'" :interfaceDetail="childnode" @saveendp="addNode"></edit-detail>
-            </el-main>
+                </el-aside>
+                <el-main>
+                    <detail-info v-if="operate=='info'"
+                                 :interfaceDetail="shownode"></detail-info>
+                    <edit-detail v-if="operate=='edit'"
+                                 :interfaceDetail="selectnode" @editendp="showinfo"></edit-detail>
+                    <edit-detail v-if="operate=='save'" :interfaceDetail="childnode" @saveendp="addNode"></edit-detail>
+                </el-main>
+            </el-container>
         </el-container>
-    </el-container>
+    </div>
 </template>
 
 <script>
