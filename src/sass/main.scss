@@ -1,0 +1,59 @@
+
+html {border:0px;}
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,Passlogin,table,td,img,div,p,dl,dt,dd{margin:0;padding:0;}
+body{margin:0; color:#313232;font-family: "微软雅黑",Lucida Grande, Verdana, Lucida, Arial, Helvetica, sans-serif;font-size:14px; text-align: left;line-height:24px;background-clip:border-box;background-origin:border-box;border:0px;}
+h1,h2,h3,h4,h5,h6{ font-size:14px;margin:0px;padding:0px;font-weight:normal;}
+
+
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+a {
+  color: #42b983;
+}
+// 公共样式
+.pull-left {
+  float: left;
+}
+.pull-right {
+  float: right;
+}
+.w100pct {
+  width: 100%;
+}
+
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.slide-fade-enter-active {
+  animation: animate-in .6s;
+}
+.slide-fade-leave-active {
+  animation: animate-out .6s;
+}
+@keyframes animate-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes animate-out {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(0);
+  }
+}

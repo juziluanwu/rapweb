@@ -1,0 +1,19 @@
+
+
+.tree-item {
+  width: 100%;
+  text-align: left;
+  .tree-btn {
+    width: 100px;
+    float: right;
+  }
+}
+.edit-main {
+  margin-left: 100px;
+  position: relative;
+  .show-info {
+    margin-top: 20px;
+    position: fixed;
+    width: 800px;
+  }
+}
