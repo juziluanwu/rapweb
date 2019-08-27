@@ -1,5 +1,9 @@
 <template>
   <div v-show="isShow" class="menuedit">
+    <div v-show="!isShowInfo" slot="footer" class="dialog-footer">
+      <el-button type="primary" class="pull-right" @click="addOrEdit()">确 定</el-button>
+      <el-button type="primary" style="margin-right:20px;" class="pull-right" @click="formatSome()">格式化</el-button>
+    </div>
     <el-form :model="interfaceDetail" label-width="80px" size="mini">
       <el-input v-model="interfaceDetail.id" type="hidden"></el-input>
       <el-form-item :label="interfaceDetail.type==3?'接口名称:':'模块名称:'">
@@ -13,7 +17,7 @@
           <el-option label="PUT" :value="3"></el-option>
           <el-option label="DELETE" :value="4"></el-option>
         </el-select>
-        <span v-show="isShowInfo">{{getTypeById(interfaceDetail.type)}}</span>
+        <span v-show="isShowInfo">{{getTypeById(interfaceDetail.iftype)}}</span>
       </el-form-item>
       <el-form-item label="请求URL:" v-show="interfaceDetail.type==3">
         <el-input v-show="!isShowInfo" v-model="interfaceDetail.url" autocomplete="off"></el-input>
@@ -33,7 +37,7 @@
       <el-form-item label="响应参数:" v-show="interfaceDetail.type==3">
         <div v-show="!isShowInfo">
           <div ref="editorResponseT" class="editTitle"></div>
-          <div ref="editorResponse" class="editParam"></div>
+          <div ref="editorResponse" class="editParam ResponseH"></div>
         </div>
         <span v-show="isShowInfo" v-html="interfaceDetail.responseparam">{{interfaceDetail.responseparam}}</span>
       </el-form-item>
@@ -68,9 +72,22 @@ export default {
      */
     initData(data, isShowInfo) {
       this.isShow = true
-      this.isShowInfo = isShowInfo
       this.interfaceDetail = data
+      this.isShowInfo = isShowInfo
+      this.interfaceDetail.requestparam = this.interfaceDetail.requestparam.replace(/ /g,"&nbsp;")
+      this.interfaceDetail.responseparam = this.interfaceDetail.responseparam.replace(/ /g,"&nbsp;")
+      if(!isShowInfo) {
+        this.editorParam.txt.html(this.interfaceDetail.requestparam)
+        this.editorResponse.txt.html(this.interfaceDetail.responseparam)
+      }
+    },
+    /**
+     * 格式化富文本
+     */
+    formatSome () {
+      this.interfaceDetail.requestparam = this.interfaceDetail.requestparam.replace(/ /g,"&nbsp;")
       this.editorParam.txt.html(this.interfaceDetail.requestparam)
+      this.interfaceDetail.responseparam = this.interfaceDetail.responseparam.replace(/ /g,"&nbsp;")
       this.editorResponse.txt.html(this.interfaceDetail.responseparam)
     },
     /**
@@ -79,11 +96,15 @@ export default {
     initEditor () {
       this.editorParam = new E(this.$refs.editorParamT,this.$refs.editorParam)
       this.editorParam.customConfig.onchange = (html) => {
+        // html = html.replace(/ /g,"&nbsp;")
+        // this.editorParam.txt.html(html)
         this.interfaceDetail.requestparam = html
       }
       this.editorParam.create()
       this.editorResponse = new E(this.$refs.editorResponseT,this.$refs.editorResponse)
       this.editorResponse.customConfig.onchange = (html) => {
+        // html = html.replace(/ /g,"&nbsp;")
+        // this.editorResponse.txt.html(html)
         this.interfaceDetail.responseparam = html
       }
       this.editorResponse.create()
@@ -137,9 +158,15 @@ export default {
     height:200px;
     max-height:200px;
   }
+  .ResponseH {
+    height: 700px;
+    max-height:700px;
+  }
   .menuedit span{
     display: block;
-    margin-left: 20px;
+    margin-left: 10px;
+    background: #eee;
+    padding: 0 20px;
     text-align: left !important;
   }
 </style>

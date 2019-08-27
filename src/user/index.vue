@@ -18,21 +18,6 @@
             >
               <span class="tree-item" slot-scope="{ node, data }">
                 <span @click="selectNode(data)">{{ node.label }}</span>
-                <span class="tree-btn">
-                  <el-button
-                    v-if="data.type != 3"
-                    type="text"
-                    size="mini"
-                    @click="append(data)"
-                  >新增</el-button>
-                  <el-button type="text" v-if="data.type != 1" size="mini" @click="edit(data)">编辑</el-button>
-                  <el-button
-                    v-if="data.type != 1"
-                    type="text"
-                    size="mini"
-                    @click="remove(node, data)"
-                  >删除</el-button>
-                </span>
               </span>
             </el-tree>
           </div>
@@ -86,7 +71,7 @@ export default {
         if (res.data.success) {
           this.inittree(res.data.data);
         }
-      })
+      });
     },
     inittree(data) {
       let tree = [];
@@ -137,19 +122,12 @@ export default {
       this.$refs.editWin.initData(node)
     },
     addNode(child) {
-      child.children = []
+      child.children = [];
       if (!this.selectnode.children) {
-        this.$set(this.selectnode, "children", [])
+        this.$set(this.selectnode, "children", []);
       }
-      this.selectnode.children.push(child)
+      this.selectnode.children.push(child);
     },
-    // remove (node,data) {
-    //   this.$Axios.get("/project/delete/" + data.id).then(res => {
-    //     if (res.data.success) {
-    //       this.inittree(res.data.data)
-    //     }
-    //   })
-    // }
   }
 };
 </script>
