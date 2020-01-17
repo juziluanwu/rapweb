@@ -8,7 +8,7 @@ import router from '@/router'
 Vue.use(ElementUI)
 Vue.config.productionTip = false
 
-// Axios.defaults.baseURL = 'http://192.168.1.109:8080/rap'
+// Axios.defaults.baseURL = 'http://localhost:8080/rap'
 Axios.defaults.baseURL = 'http://47.95.10.169:8080/rap'
 Vue.prototype.$Axios = Axios
 
