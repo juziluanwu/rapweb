@@ -74,21 +74,31 @@
              * 初始化数据
              */
             initData(data, isShowInfo) {
-
-                this.$Axios.get("/project//info/" + data.id).then(res => {
-                    if (res.data.success) {
-                        this.isShow = true
-                        this.interfaceDetail = res.data.data
-                        this.isShowInfo = isShowInfo
-                        this.interfaceDetail.requestparam = this.interfaceDetail.requestparam.replace(/ /g, "&nbsp;")
-                        this.interfaceDetail.responseparam = this.interfaceDetail.responseparam.replace(/ /g, "&nbsp;")
-                        if (!isShowInfo) {
-                            this.editorParam.txt.html(this.interfaceDetail.requestparam)
-                            this.editorResponse.txt.html(this.interfaceDetail.responseparam)
+                if(data.id != null) {
+                    this.$Axios.get("/project/info/" + data.id).then(res => {
+                        if (res.data.success) {
+                            this.isShow = true
+                            this.interfaceDetail = res.data.data
+                            this.isShowInfo = isShowInfo
+                            this.interfaceDetail.requestparam = this.interfaceDetail.requestparam.replace(/ /g, "&nbsp;")
+                            this.interfaceDetail.responseparam = this.interfaceDetail.responseparam.replace(/ /g, "&nbsp;")
+                            if (!isShowInfo) {
+                                this.editorParam.txt.html(this.interfaceDetail.requestparam)
+                                this.editorResponse.txt.html(this.interfaceDetail.responseparam)
+                            }
                         }
+                    });
+                }else{
+                    this.isShow = true
+                    this.interfaceDetail = data
+                    this.isShowInfo = isShowInfo
+                    this.interfaceDetail.requestparam = this.interfaceDetail.requestparam.replace(/ /g,"&nbsp;")
+                    this.interfaceDetail.responseparam = this.interfaceDetail.responseparam.replace(/ /g,"&nbsp;")
+                    if(!isShowInfo) {
+                        this.editorParam.txt.html(this.interfaceDetail.requestparam)
+                        this.editorResponse.txt.html(this.interfaceDetail.responseparam)
                     }
-                });
-
+                }
             },
             /**
              * 格式化富文本
