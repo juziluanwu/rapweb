@@ -143,13 +143,13 @@ export default {
       }
       this.selectnode.children.push(child)
     },
-    // remove (node,data) {
-    //   this.$Axios.get("/project/delete/" + data.id).then(res => {
-    //     if (res.data.success) {
-    //       this.inittree(res.data.data)
-    //     }
-    //   })
-    // }
+    remove (node,data) {
+      this.$Axios.get("/project/delete/" + data.id).then(res => {
+        if (res.data.success) {
+          this.inittree(res.data.data)
+        }
+      })
+    }
   }
 };
 </script>
