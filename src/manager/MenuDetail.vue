@@ -146,7 +146,12 @@ export default {
     remove (node,data) {
       this.$Axios.post("/project/delete/" + data.id).then(res => {
         if (res.data.success) {
-          this.inittree(res.data.data)
+          //this.inittree(res.data.data)
+          const parent = node.parent;
+          const children = parent.data.children || parent.data;
+          const index = children.findIndex(d => d.id === data.id);
+          children.splice(index, 1);
+
         }
       })
     }
