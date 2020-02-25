@@ -5,6 +5,16 @@
         <h1>接口文档</h1>
       </el-header>
       <el-main>
+
+        <el-row>
+          <el-col :span="16">
+            <el-input v-model="creator" placeholder="请填写创建人"></el-input>
+          </el-col>
+          <el-col :span="4">
+            <el-button @click="confirmCreator()">确认</el-button>
+          </el-col>
+        </el-row>
+
         <el-row>
           <el-col :span="16">
             <el-input v-model="searchinfo" placeholder="请输入内容"></el-input>
@@ -74,6 +84,7 @@ export default {
   },
   data() {
     return {
+      creator:"",
       projectinfo: [],
       searchinfo: "",
       projectdetail: {},
@@ -107,6 +118,8 @@ export default {
     },
     addOrEdit() {
       this.projectdetail.type = 1;
+
+
       if (this.projectdetail.id) {
         this.$Axios.post("/project/update", this.projectdetail).then(res => {
           if (res.data.success) {
@@ -122,8 +135,22 @@ export default {
           }
         });
       }
+    },
+    confirmCreator(){
+      localStorage.setItem("creator",this.creator)
+      var creator = localStorage.getItem("creator");
+      if (creator != null && creator != '') {
+        this.$message({
+          message: '填写成功---'+creator,
+          type: 'success'
+        });
+      }
     }
   }
 };
 </script>
-
+<style>
+  .el-row {
+    margin-bottom: 20px;
+  }
+</style>

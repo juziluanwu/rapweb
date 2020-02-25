@@ -51,9 +51,9 @@
 </template>
 
 <script>
-  import E from 'wangeditor'
+    import E from 'wangeditor'
 
-  export default {
+    export default {
         name: "EditDetail",
         data() {
             return {
@@ -74,7 +74,7 @@
              * 初始化数据
              */
             initData(data, isShowInfo) {
-                if(data.id != null) {
+                if (data.id != null) {
                     this.$Axios.get("/project/info/" + data.id).then(res => {
                         if (res.data.success) {
                             this.isShow = true
@@ -88,13 +88,13 @@
                             }
                         }
                     });
-                }else{
+                } else {
                     this.isShow = true
                     this.interfaceDetail = data
                     this.isShowInfo = isShowInfo
-                    this.interfaceDetail.requestparam = this.interfaceDetail.requestparam.replace(/ /g,"&nbsp;")
-                    this.interfaceDetail.responseparam = this.interfaceDetail.responseparam.replace(/ /g,"&nbsp;")
-                    if(!isShowInfo) {
+                    this.interfaceDetail.requestparam = this.interfaceDetail.requestparam.replace(/ /g, "&nbsp;")
+                    this.interfaceDetail.responseparam = this.interfaceDetail.responseparam.replace(/ /g, "&nbsp;")
+                    if (!isShowInfo) {
                         this.editorParam.txt.html(this.interfaceDetail.requestparam)
                         this.editorResponse.txt.html(this.interfaceDetail.responseparam)
                     }
@@ -141,6 +141,7 @@
                 }
             },
             addOrEdit() {
+                this.interfaceDetail.creator = localStorage.getItem("creator")
                 if (this.interfaceDetail.id) {
                     //编辑
                     this.$Axios.post("/project/update", this.interfaceDetail).then(res => {
