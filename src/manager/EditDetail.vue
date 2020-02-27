@@ -6,6 +6,12 @@
             </el-button>
         </div>
         <el-form :model="interfaceDetail" label-width="80px" size="mini">
+            <template>
+                <el-select v-model="interfaceDetail.type" placeholder="请选择">
+                    <el-option label="模块" :value="2"></el-option>
+                    <el-option label="接口" :value="3"></el-option>
+                </el-select>
+            </template>
             <el-input v-model="interfaceDetail.id" type="hidden"></el-input>
             <el-form-item :label="interfaceDetail.type==3?'接口名称:':'模块名称:'">
                 <el-input v-show="!isShowInfo" v-model="interfaceDetail.name" autocomplete="off"></el-input>
@@ -159,6 +165,18 @@
                             this.isShowInfo = true
                         }
                     });
+                }
+            },
+            moduledata() {
+                return {
+                    options: [{
+                        value: '选项1',
+                        label: '黄金糕'
+                    }, {
+                        value: '选项2',
+                        label: '双皮奶'
+                    }],
+                    value: ''
                 }
             }
         }

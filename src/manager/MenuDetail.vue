@@ -133,7 +133,8 @@
                 let childnode = {
                     pid: node.pid || node.id,
                     fid: node.id,
-                    type: node.type == 1 ? 2 : 3,
+                    // type: node.type == 1 ? 2 : 3,
+                    type: 2,
                     requestparam: '',
                     responseparam: '',
                 };
