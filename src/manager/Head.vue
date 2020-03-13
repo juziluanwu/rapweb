@@ -15,16 +15,17 @@
         name: "VersionHead",
         data() {
             return {
-                version:''
+                version:'',
+                key:''
             }
         },
         mounted() {
-
+            this.key = this.$route.params.id;
         },
         methods: {
             confirmversion(){
-                localStorage.setItem("version",this.version)
-                var version = localStorage.getItem("version");
+                localStorage.setItem(this.key,this.version)
+                var version = localStorage.getItem(this.key);
                 if (version != null && version != '') {
                     this.$message({
                         message: '填写成功---当前版本'+version,

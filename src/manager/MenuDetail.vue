@@ -135,7 +135,7 @@ export default {
         });
         return;
       }
-      var version = localStorage.getItem("version");
+      var version = localStorage.getItem(this.projectid);
       if(version == null || version == ""){
         this.$alert("请填写接口版本，对应原型版本", "警告", {
           confirmButtonText: "确定"
@@ -161,7 +161,7 @@ export default {
         });
         return;
       }
-      var version = localStorage.getItem("version");
+      var version = localStorage.getItem(this.projectid);
       if(version == null || version == ""){
         this.$alert("请填写接口版本，对应原型版本", "警告", {
           confirmButtonText: "确定"

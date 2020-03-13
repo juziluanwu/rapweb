@@ -148,7 +148,7 @@
             },
             addOrEdit() {
                 this.interfaceDetail.creator = localStorage.getItem("creator")
-                this.interfaceDetail.version = localStorage.getItem("version")
+                this.interfaceDetail.version = localStorage.getItem(this.interfaceDetail.pid)
                 if (this.interfaceDetail.id) {
                     //编辑
                     this.$Axios.post("/project/update", this.interfaceDetail).then(res => {
