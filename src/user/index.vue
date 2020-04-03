@@ -1,133 +1,86 @@
 <template>
-  <div id="v-detail" style="width: 1300px;margin: auto;">
-    <el-container width="900px">
-      <el-container>
-        <el-aside width="400px" height="auto">
-          <div class="block">
-          <el-input placeholder="输入关键字进行过滤" v-model="filterText"></el-input>
-            <el-tree
-            style="margin-top:20px;"
-              :data="treedata"
-              :props="treedataprop"
-              node-key="id"
-              default-expand-all
-              highlight-current
-              :filter-node-method="filterNode"
-              :expand-on-click-node="false"
-              ref="tree"
-            >
-              <span class="tree-item" slot-scope="{ node, data }">
-                <span @click="selectNode(data)">{{ node.label }}</span>
-              </span>
-            </el-tree>
-          </div>
-        </el-aside>
-        <el-main class="edit-main">
-          <div class="show-info">
-            <edit-detail ref="editWin" @saveendp="addNode"></edit-detail>
-          </div>
-        </el-main>
-      </el-container>
+  <div id="v-project" style="width: 700px;margin: auto">
+    <el-container>
+      <el-header>
+        <h1>接口文档</h1>
+      </el-header>
+      <el-main>
+        <el-row>
+          <el-col :span="15">
+            <el-input v-model="searchinfo" placeholder="请输入内容"></el-input>
+          </el-col>
+          <el-col :span="3">
+            <el-button @click="searchProject()">搜索</el-button>
+          </el-col>
+          <el-col :span="3">
+            <el-button @click="iniSearchProject()">重置</el-button>
+          </el-col>
+          <el-col :span="3">
+            <el-button @click="showAddDig()">新增</el-button>
+          </el-col>
+        </el-row>
+
+        <el-table :data="projectinfo" style="width: 100%">
+          <el-table-column fixed label="项目名称">
+            <template slot-scope="scope">
+              <router-link :to="'/UserDetail/'+scope.row.id">{{scope.row.name}}</router-link>
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" label="操作" width="100">
+            <template slot-scope="scope">
+              <el-button @click="showDetailDig(scope.row)" type="text" size="small">查看</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </el-main>
     </el-container>
+    <el-dialog title="详情" :visible.sync="detailVisible">
+      <el-form :model="projectdetail">
+        <el-form-item label="项目名称:">
+          <span>{{projectdetail.name}}</span>
+        </el-form-item>
+        <el-form-item label="项目简介:">
+          <span>{{projectdetail.remark}}</span>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="detailVisible = false">取 消</el-button>
+        <el-button type="primary" @click="detailVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import "@/sass/components/MenuDetail.scss"
-import edit_detail from "./EditDetail";
-
 export default {
-  name: "MenuDetail",
-  components: {
-    "edit-detail": edit_detail,
-  },
-  watch: {
-    filterText(val) {
-      this.$refs.tree.filter(val);
-    },
-  },
+  name: "project",
   data() {
     return {
-      shownode: {},
-      operate: "", //显示编辑还是详情
-      filterText: "",
-      selectnode: {}, //接口详情
-      interfacetype: "", //菜单的类型
-      projectid: "", //项目id
-      treedata: [],
-      treedataprop: {
-        label: "name",
-        children: "children"
-      }
+      projectinfo: [],
+      projectdetail: "",
+      searchinfo: "",
+      detailVisible: false
     };
   },
   mounted() {
-    this.projectid = this.$route.params.id; //获取router传过来的参数
-    this.menutree();
+    this.searchProject();
   },
   methods: {
-    menutree() {
-      this.$Axios.get("/project/tree?pid=" + this.projectid).then(res => {
-        if (res.data.success) {
-          this.inittree(res.data.data);
-        }
-      });
+    iniSearchProject() {
+      this.searchinfo = "";
+      this.searchProject();
     },
-    inittree(data) {
-      let tree = [];
-      if (data && data.length) {
-        for (var i = 0; i < data.length; i++) {
-          let item = data[i];
-          if (item.type == 1) {
-            let node = item;
-            this.digui(data, node);
-            tree.push(node);
-          }
-        }
-      }
-      this.treedata = tree;
+    searchProject() {
+      this.$Axios
+        .get("/project/list?name=" + this.searchinfo + "&type=1")
+        .then(res => {
+          this.projectinfo = res.data.data;
+        });
     },
-    digui(data, fdata) {
-      fdata.children = [];
-      for (var i = 0; i < data.length; i++) {
-        let citem = data[i];
-        if (citem.fid == fdata.id) {
-          fdata.children.push(citem);
-          this.digui(data, citem);
-        }
-      }
-    },
-    filterNode(value, data) {
-      if (!value) return true;
-      return data.name.indexOf(value) !== -1;
-    },
-
-    selectNode(node) {
-      this.selectnode = node
-      this.$refs.editWin.initData(node,true)
-    },
-    append(node) {
-      this.selectnode = node
-      let childnode = {
-        pid: node.pid||node.id,
-        fid: node.id,
-        type: node.type == 1? 2 : 3,
-        requestparam:'',
-        responseparam:'',
-      };
-      this.$refs.editWin.initData(childnode)
-    },
-    edit(node) {
-      this.selectnode = node
-      this.$refs.editWin.initData(node)
-    },
-    addNode(child) {
-      child.children = [];
-      if (!this.selectnode.children) {
-        this.$set(this.selectnode, "children", []);
-      }
-      this.selectnode.children.push(child);
-    },
+    showDetailDig(row) {
+      this.detailVisible = true;
+      this.projectdetail = row;
+    }
   }
 };
 </script>

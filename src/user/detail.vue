@@ -23,59 +23,27 @@
         <span v-show="isShowInfo">{{interfaceDetail.name}}</span>
       </el-form-item>
       <el-form-item label="请求类型:" v-show="interfaceDetail.type==3">
-        <el-select
-          v-show="!isShowInfo"
-          class="w100pct"
-          v-model="interfaceDetail.iftype"
-          placeholder="请选择"
-        >
-          <el-option label="GET" :value="1"></el-option>
-          <el-option label="POST" :value="2"></el-option>
-          <el-option label="PUT" :value="3"></el-option>
-          <el-option label="DELETE" :value="4"></el-option>
-        </el-select>
-        <span v-show="isShowInfo">{{getTypeById(interfaceDetail.iftype)}}</span>
+        <span>{{getTypeById(interfaceDetail.iftype)}}</span>
       </el-form-item>
       <el-form-item label="请求URL:" v-show="interfaceDetail.type==3">
-        <el-input v-show="!isShowInfo" v-model="interfaceDetail.url" autocomplete="off"></el-input>
-        <span v-show="isShowInfo">{{interfaceDetail.url}}</span>
+        <span>{{interfaceDetail.url}}</span>
       </el-form-item>
       <el-form-item label="说明:">
-        <el-input v-show="!isShowInfo" v-model="interfaceDetail.remark" autocomplete="off"></el-input>
-        <span v-show="isShowInfo">{{interfaceDetail.remark}}</span>
+        <span>{{interfaceDetail.remark}}</span>
       </el-form-item>
       <div class="aotoCon">
         <el-form-item label="请求参数:" v-show="interfaceDetail.type==3">
-          <div v-show="!isShowInfo">
-            <div ref="editorParamT" class="editTitle"></div>
-            <div ref="editorParam" class="editParam"></div>
-          </div>
-          <span
-            v-show="isShowInfo"
-            v-html="interfaceDetail.requestparam"
-          >{{interfaceDetail.requestparam}}</span>
+          <span v-html="interfaceDetail.requestparam">{{interfaceDetail.requestparam}}</span>
         </el-form-item>
         <el-form-item label="响应参数:" v-show="interfaceDetail.type==3">
-          <div v-show="!isShowInfo">
-            <div ref="editorResponseT" class="editTitle"></div>
-            <div ref="editorResponse" class="editParam ResponseH"></div>
-          </div>
-          <span
-            v-show="isShowInfo"
-            v-html="interfaceDetail.responseparam"
-          >{{interfaceDetail.responseparam}}</span>
+          <span v-html="interfaceDetail.responseparam">{{interfaceDetail.responseparam}}</span>
         </el-form-item>
       </div>
     </el-form>
-    <div v-show="!isShowInfo" slot="footer" class="dialog-footer">
-      <el-button type="primary" class="pull-right" @click="addOrEdit()">确 定</el-button>
-    </div>
   </div>
 </template>
 
 <script>
-import E from "wangeditor";
-
 export default {
   name: "EditDetail",
   data() {
@@ -88,9 +56,6 @@ export default {
       editorResponse: "",
       editorResponseContent: ""
     };
-  },
-  mounted() {
-    this.initEditor();
   },
   methods: {
     /**
@@ -135,43 +100,6 @@ export default {
         }
       }
     },
-    /**
-     * 格式化富文本
-     */
-    formatSome() {
-      this.interfaceDetail.requestparam = this.interfaceDetail.requestparam.replace(
-        / /g,
-        "&nbsp;"
-      );
-      this.editorParam.txt.html(this.interfaceDetail.requestparam);
-      this.interfaceDetail.responseparam = this.interfaceDetail.responseparam.replace(
-        / /g,
-        "&nbsp;"
-      );
-      this.editorResponse.txt.html(this.interfaceDetail.responseparam);
-    },
-    /**
-     * 初始化编辑器
-     */
-    initEditor() {
-      this.editorParam = new E(this.$refs.editorParamT, this.$refs.editorParam);
-      this.editorParam.customConfig.onchange = html => {
-        // html = html.replace(/ /g,"&nbsp;")
-        // this.editorParam.txt.html(html)
-        this.interfaceDetail.requestparam = html;
-      };
-      this.editorParam.create();
-      this.editorResponse = new E(
-        this.$refs.editorResponseT,
-        this.$refs.editorResponse
-      );
-      this.editorResponse.customConfig.onchange = html => {
-        // html = html.replace(/ /g,"&nbsp;")
-        // this.editorResponse.txt.html(html)
-        this.interfaceDetail.responseparam = html;
-      };
-      this.editorResponse.create();
-    },
     getTypeById(type) {
       //1get 2post 3put 4delete
       if (type == 1) {
@@ -183,45 +111,6 @@ export default {
       } else if (type == 4) {
         return "DELETE";
       }
-    },
-    addOrEdit() {
-      this.interfaceDetail.creator = localStorage.getItem("creator");
-      this.interfaceDetail.version = localStorage.getItem(
-        this.interfaceDetail.pid
-      );
-      if (this.interfaceDetail.id) {
-        //编辑
-        this.$Axios.post("/project/update", this.interfaceDetail).then(res => {
-          if (res.data.success) {
-            //调取父级方法
-            this.isShowInfo = true;
-          }
-        });
-      } else {
-        //新增
-        this.$Axios.post("/project/save", this.interfaceDetail).then(res => {
-          if (res.data.success) {
-            //调取父级方法
-            this.$emit("saveendp", res.data.data);
-            this.isShowInfo = true;
-          }
-        });
-      }
-    },
-    moduledata() {
-      return {
-        options: [
-          {
-            value: "选项1",
-            label: "黄金糕"
-          },
-          {
-            value: "选项2",
-            label: "双皮奶"
-          }
-        ],
-        value: ""
-      };
     }
   }
 };

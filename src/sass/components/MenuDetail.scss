@@ -1,21 +1,44 @@
-
-
-.tree-item {
-  width: 100%;
-  text-align: left;
-  .tree-btn {
-    width: 100px;
-    float: right;
+.v-detail {
+  .tree-item {
+    width: 100%;
+    text-align: left;
+    .span-ellipsis {
+      width: 300px;
+      overflow: hidden; //超过指定的宽度和高度也隐藏
+      overflow: hidden; //超过指定的宽度和高度也隐藏 同时也隐藏子元素
+      display: inline-block; //块级元素显示在这一行，不换行，其他块级元素也可以显示在这一行
+      white-space: nowrap; //所有的文本都显示在这一行
+      text-overflow: ellipsis; // 多余的文本用省略号显示
+      // title: content; //鼠标移入时会显示title的内容
+    }
+    .tree-btn {
+      width: 130px;
+      float: right;
+      text-align: right;
+      .version {
+        margin-right: 10px;
+      }
+    }
   }
-}
-.edit-main {
-  margin-left: 100px;
-  position: relative;
-  .show-info {
-    margin-top: 20px;
-    position: fixed;
-    width: 800px;
-    overflow:auto;
-    height:800px;
+  .edit-main {
+    margin-left: 100px;
+    position: relative;
+    .show-info {
+      position: fixed;
+      top: 50px;
+      width: 800px;
+      .menuedit {
+        .aotoCon {
+          height: 600px;
+          overflow: auto;
+        }
+        .author {
+          position: absolute;
+          left:0;
+          font-size: 20px;
+          top: 15px;
+        }
+      }
+    }
   }
 }
